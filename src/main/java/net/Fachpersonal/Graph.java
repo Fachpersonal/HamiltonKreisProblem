@@ -12,6 +12,7 @@ public class Graph extends JPanel {
     private Point pE = null;
 
     private int[] path;
+    private int[] _path;
 
     public Graph() {
         this.addMouseListener(new MouseAdapter() {
@@ -76,78 +77,134 @@ public class Graph extends JPanel {
         if (find) {
             for (Knoten k : Main.KN) {
                 if (k.getNeighbors().size() < 2) {
-                    System.out.println("NOT POSSIBLE '" + k.getName() + "' only has " + k.getNeighbors());
+                    System.out.println("NOT POSSIBLE '" + k.getName() + "' only has " + k.getNeighbors().size() + " neighbor");
+                    return;
                 }
             }
-            System.out.println(HamCircl());
-
+//            printHamCircle();
+            _HamCircl();
             find = false;
         }
     }
 
-    private boolean HamCircl() {
+    private void _HamCircl() {
         int V = Main.KN.size();
 
-        path = new int[V];
+        _path = new int[V];
 
         for (int i = 0; i < V; i++) {
+            _path[V] = -1;
+        }
+
+        solvHC(0,Main.KN.get(0));
+    }
+
+    private boolean solvHC(int pos,Knoten k) {
+        for (Kante kn : k.getNeighbors()) {
+            Knoten _k = (k.getName() == kn.getKnotenA().getName() ? kn.getKnotenB() : kn.getKnotenA());
+            if(_k.getName() == 0 && check(0)) {
+                return true;
+            }
+            _path[pos] = _k.getName();
+            if(solvHC(pos+1,_k)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    private boolean check(int x) {
+        for (int i = 0; i < _path.length-1; i++) {
+            if(_path[i] == -1)
+                return false;
+        }
+        return _path[_path.length-1] == -1 && x==0;
+    }
+
+    private void printHamCircle() {
+        int anzahlKnoten = Main.KN.size();
+
+        System.out.println("-------------------------");
+        System.out.println("Anzahl Knoten: " + anzahlKnoten);
+
+        path = new int[anzahlKnoten + 1];
+
+        for (int i = 1; i <= anzahlKnoten; i++) {
             path[i] = -1;
         }
 
+        //Main.KN.get(0).besucht();
+        path = solveHamCircle(path, 1, -1, Main.KN.get(0));
 
-        solvHamCircl(0, Main.KN.get(0));
+        System.out.println("path: ");
+        for (int i : path) {
+            System.out.print(i);
+        }
+        System.out.println();
     }
 
-    private void solvHamCircl(int pos, Knoten k) {
-        for (Kante _ke : k.getNeighbors()) {
-            Knoten _k = (k.getName() == _ke.getKnotenA().getName() ? _ke.getKnotenB() : _ke.getKnotenA());
-            boolean x = false;
-            for (int i : path) {
-                if (i == _k.getName()) {
-                    if(x) {
-                        path[pos] = -1;
-                        return;
+    public void testPrint(int[] path) {
+        System.out.println("test printed path: ");
+        for (int i : path) {
+            System.out.print(i);
+        }
+        System.out.println();
+    }
+
+    /**
+     * @param path
+     * @param step
+     * @param param -1=normal ; other number = previous path
+     * @param k
+     * @return
+     */
+    private int[] solveHamCircle(int[] path, int step, int param, Knoten k) {
+        System.out.println("Step: " + step + "; Knoten: " + k.getName());
+        testPrint(path);
+
+
+        //neuen Test-Path anlegen
+        int[] localPath = path;
+
+        if (step > path.length) return null;
+
+        //teste jede Kante des Knotens
+        for (Kante nKante : k.getNeighbors()) {
+            if (!nKante.isBesucht()) {
+                //bekomme nachbar knoten
+                Knoten n = (k.getName() == nKante.getKnotenA().getName() ? nKante.getKnotenB() : nKante.getKnotenA());
+                if (!n.isBesucht()) {
+                    if (n.getName() != param) {
+                        localPath[step] = n.getName();
+                        nKante.besucht();
+                        n.besucht();
+
+                        //teste, ob HamCircle erfolgreich geschlossen wurde
+                        if (localPath[step] == k.getName() && step != 0) {
+                            return localPath;
+                        }
+                        solveHamCircle(localPath, step + 1, -1, n);
                     }
-                    x = true;
                 }
             }
-            path[pos] = _k.getName();
-            solvHamCircl(pos + 1, _k);
         }
+
+
+        int[] previousPath = path;
+        previousPath[step - 1] = -1;
+        for (Kante nKante : k.getNeighbors()) {
+            nKante.besucht();
+            nKante.getKnotenA().besucht();
+            nKante.getKnotenB().besucht();
+        }
+        solveHamCircle(previousPath, step - 1, k.getName(), getKnotenByName(path[step - 1]));
+
+        return null;
     }
 
-    /*
-    private boolean solvHamCircl(int pos, Knoten k) {
-        if(pos+1 > path.length) {
-            for (int i = 0; i < path.length; i++) {
-                if(path[i] == -1) {
-                    break;
-                }
-            }
-            if(path[pos] == Main.KN.get(0).getName()) {
-                return true;
-            }
-            return false;
+    public Knoten getKnotenByName(int name) {
+        for (Knoten k : Main.KN) {
+            if (k.getName() == name) return k;
         }
-        ArrayList<Kante> kn = k.getNeighbors();
-        for(Kante _kn : kn) {
-            Knoten _Knoten = _kn.getKnotenB();
-            if(pos != 0 && _Knoten == Main.KN.get(path[pos-1])) {
-                continue;
-            }
-            for (int i = 0; i < path.length; i++) {
-                if(_Knoten.getName() == path[i] && i != pos-1) {
-                    return false;
-                }
-            }
-            path[pos] = _Knoten.getName();
-            if (solvHamCircl(pos+1, _Knoten)) {
-                return true;
-            } else {
-                path[pos] = -1;
-            }
+        return null;
         }
-
-        return false;
-    }*/
-}
+    }

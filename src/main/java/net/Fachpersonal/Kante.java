@@ -13,8 +13,18 @@ public class Kante {
         besucht = false;
     }
 
-    public void besucht() {besucht = !besucht;}
-    public boolean getBesucht() {return besucht;}
+    private Knoten leadsTo(Knoten k) {
+        if (k.getName() == knotenA.getName()) return knotenA;
+        if (k.getName() == knotenB.getName()) return knotenB;
+        return null;
+    }
+
+    public void besucht() {besucht = true;}
+    public boolean isBesucht() {return besucht;}
+
+    public void clearBesucht() {
+        besucht = false;
+    }
 
     public Knoten getKnotenA() {
         return knotenA;

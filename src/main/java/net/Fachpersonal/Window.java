@@ -53,6 +53,12 @@ public class Window extends JFrame implements Runnable {
                     repaint();
                     System.out.println("Cleared Board");
                 } else if(e.getKeyCode() == KeyEvent.VK_F) { // FIND PATH
+                    for (Knoten all : Main.KN) {
+                        all.clearBesucht();
+                    }
+                    for (Kante all : Main.kanten) {
+                        all.clearBesucht();
+                    }
                     Graph.find = !Graph.find;
                     repaint();
                 }

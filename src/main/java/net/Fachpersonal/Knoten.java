@@ -19,9 +19,12 @@ public class Knoten {
         besucht = false;
     }
 
-
     public void besucht() {besucht = true;}
-    public boolean getBesucht() {return besucht;}
+    public boolean isBesucht() {return besucht;}
+
+    public void clearBesucht() {
+        besucht = false;
+    }
 
     public ArrayList<Kante> getNeighbors() {return neighbors;}
 
