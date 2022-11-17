@@ -2,35 +2,30 @@ package net.Fachpersonal;
 
 public class Kante {
 
-    private final Knoten knotenA;
-    private final Knoten knotenB;
-
-    private boolean besucht;
-
-    public Kante(Knoten k1, Knoten k2) {
-        this.knotenA = k1;
-        this.knotenB = k2;
-        besucht = false;
+    private int x0;
+    private int y0;
+    private int x1;
+    private int y1;
+    public Kante(int x, int y, int x1, int y1) {
+        x0 = x;
+        this.x1 = x1;
+        y0= y;
+        this.y1=y1;
     }
 
-    private Knoten leadsTo(Knoten k) {
-        if (k.getName() == knotenA.getName()) return knotenA;
-        if (k.getName() == knotenB.getName()) return knotenB;
-        return null;
+    public int getX0() {
+        return x0;
     }
 
-    public void besucht() {besucht = true;}
-    public boolean isBesucht() {return besucht;}
-
-    public void clearBesucht() {
-        besucht = false;
+    public int getY0() {
+        return y0;
     }
 
-    public Knoten getKnotenA() {
-        return knotenA;
+    public int getX1() {
+        return x1;
     }
 
-    public Knoten getKnotenB() {
-        return knotenB;
+    public int getY1() {
+        return y1;
     }
 }

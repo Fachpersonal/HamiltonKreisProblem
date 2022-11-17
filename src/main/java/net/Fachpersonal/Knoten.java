@@ -4,39 +4,30 @@ import java.util.ArrayList;
 
 public class Knoten {
     private final int name;
-    private final int x;
-    private final int y;
-
-    private boolean besucht;
-
-    private ArrayList<Kante> neighbors;
+    private final int X;
+    private final int Y;
+    private ArrayList<Knoten> nachbarn;
 
     public Knoten(int name, int x, int y) {
         this.name = name;
-        this.x = x;
-        this.y = y;
-        neighbors = new ArrayList<>();
-        besucht = false;
+        this.X = x;
+        this.Y = y;
+        nachbarn = new ArrayList<>();
     }
-
-    public void besucht() {besucht = true;}
-    public boolean isBesucht() {return besucht;}
-
-    public void clearBesucht() {
-        besucht = false;
-    }
-
-    public ArrayList<Kante> getNeighbors() {return neighbors;}
 
     public int getName() {
         return name;
     }
 
     public int getX() {
-        return x;
+        return X;
     }
 
     public int getY() {
-        return y;
+        return Y;
+    }
+
+    public ArrayList<Knoten> getNachbarn() {
+        return nachbarn;
     }
 }
