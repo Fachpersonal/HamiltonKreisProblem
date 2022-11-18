@@ -7,12 +7,9 @@ import java.awt.event.KeyListener;
 
 public class Window extends JFrame implements Runnable {
 
+    private final String TITLE = "Hamilton Kreis Problem - v.0.2";
+
     public static Color[] colorPalette;
-
-    private final int TICKS_PER_SECOND = 2;
-    private final int SKIP_TICKS = 1000 / TICKS_PER_SECOND;
-    private final int MAX_FRAMESKIP = 5;
-
     public Window() {
         colorPalette = new Color[] {
                 new Color(239, 245, 245),
@@ -23,16 +20,12 @@ public class Window extends JFrame implements Runnable {
         };
         //https://colorhunt.co/palette/eff5f5d6e4e5497174eb6440
     }
-
-    private final int width = 500;
-    private final int height = 500;
-    private final String TITLE = "Hamilton Kreis Problem - v.0.2";
     @Override
     public void run() {
         this.setIconImage(new ImageIcon("C:\\Users\\falscherIdiot\\Pictures\\Downloads\\HamiltonKreisProblem.jpg").getImage());
         this.setTitle(TITLE);
-        this.setResizable(false);
-        this.setSize(width, height);
+        this.setResizable(true);
+        this.setSize(500, 500);
         this.add(new Graph());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(colorPalette[0]);
