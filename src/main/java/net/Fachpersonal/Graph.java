@@ -2,6 +2,8 @@ package net.Fachpersonal;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -16,6 +18,19 @@ public class Graph extends JPanel {
     private Graphics g;
 
     public Graph() {
+        Button b = new Button("Find Path");
+        b.setBounds(100,100,80,40);
+        this.add(b);
+        b.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                find = true;
+                found = false;
+                repaint();
+            }
+        });
+
+
         this.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 pS = e.getPoint();
@@ -115,21 +130,20 @@ public class Graph extends JPanel {
             path[i] = -1;
         }
 
-        if (solvHC(0, Main.KN.get(0))) {
-            found = true;
-            System.out.print("path : 0 -> ");
-            for (int x : path) {
-                System.out.print(x == 0 ? x + "\n" : x + " -> ");
-                repaint();
+        if (Main.KN.size() != 0) {
+            if (solvHC(0, Main.KN.get(0))) {
+                found = true;
+                System.out.print("path : 0 -> ");
+                for (int x : path) {
+                    System.out.print(x == 0 ? x + "\n" : x + " -> ");
+                    repaint();
 
-                /*
 
-
-                 */
+                }
+                return;
             }
-        } else {
-            System.out.println("Kein Pfad gefunden!");
         }
+        System.out.println("Kein Pfad gefunden!");
     }
 
     private boolean solvHC(int pos, Knoten k) {

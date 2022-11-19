@@ -10,6 +10,8 @@ public class Window extends JFrame implements Runnable {
     private final String TITLE = "Hamilton Kreis Problem - v.0.2";
 
     public static Color[] colorPalette;
+
+    public Button pathB;
     public Window() {
         colorPalette = new Color[] {
                 new Color(239, 245, 245),
@@ -30,6 +32,7 @@ public class Window extends JFrame implements Runnable {
         this.add(new Graph());
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setBackground(colorPalette[0]);
+
         this.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {}
