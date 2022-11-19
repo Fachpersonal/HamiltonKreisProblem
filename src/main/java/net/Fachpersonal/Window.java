@@ -16,7 +16,8 @@ public class Window extends JFrame implements Runnable {
                 new Color(214,228,229),
                 new Color(73,113,116),
                 new Color(235,100,64),
-                new Color(57,62,70)
+                new Color(57,62,70),
+                new Color(255, 0, 0)
         };
         //https://colorhunt.co/palette/eff5f5d6e4e5497174eb6440
     }
@@ -46,7 +47,9 @@ public class Window extends JFrame implements Runnable {
                     repaint();
                     System.out.println("Cleared Board");
                 } else if(e.getKeyCode() == KeyEvent.VK_F) { // FIND PATH
-                    Graph.find = !Graph.find;
+                    //System.out.println("test");
+                    Graph.find = true;
+                    Graph.found = false;
                     repaint();
                 }
             }

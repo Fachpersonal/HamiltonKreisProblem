@@ -13,4 +13,11 @@ public class Main {
         kanten = new ArrayList<>();
         new Thread(new Window()).start();
     }
+
+    public static Knoten getKnotenByName(int name) {
+        for (Knoten all : KN) {
+            if (all.getName() == name) return all;
+        }
+        return null;
+    }
 }

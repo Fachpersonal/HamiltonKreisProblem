@@ -7,11 +7,13 @@ import java.awt.event.MouseEvent;
 
 public class Graph extends JPanel {
     public static boolean find = false;
+    public static boolean found = false;
     private final int SCALE = 25;
     private Point pS = null;
     private Point pE = null;
 
     private int[] path;
+    private Graphics g;
 
     public Graph() {
         this.addMouseListener(new MouseAdapter() {
@@ -60,9 +62,29 @@ public class Graph extends JPanel {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
+        this.g = g;
         for (Kante k : Main.kanten) {
             g.setColor(Window.colorPalette[4]);
             g.drawLine(k.getX0() + (SCALE / 2), k.getY0() + (SCALE / 2), k.getX1() + (SCALE / 2), k.getY1() + (SCALE / 2));
+        }
+        //gefundenen pfad hervorheben
+        if (path != null && found) {
+            for (int i = -1; i < path.length; i++) {
+                Knoten knoten = Main.getKnotenByName(i == -1 ? 0 : path[i]);
+                for (Knoten all : knoten.getNachbarn()) {
+                    if (i + 1 < path.length) {
+                        if (all.getName() == path[i + 1]) {
+                            g.setColor(Window.colorPalette[5]);
+                            Graphics2D g2 = (Graphics2D) g;
+                            g2.setStroke(new BasicStroke(3));
+                            g2.setStroke(new BasicStroke(3));
+                            //g2.drawLine();   //thick
+                            g2.drawLine(knoten.getX() + (SCALE / 2), knoten.getY() + (SCALE / 2), all.getX() + (SCALE / 2), all.getY() + (SCALE / 2));
+                        }
+                    }
+                }
+
+            }
         }
         for (Knoten k : Main.KN) {
             g.setColor(Window.colorPalette[2]);
@@ -94,9 +116,16 @@ public class Graph extends JPanel {
         }
 
         if (solvHC(0, Main.KN.get(0))) {
+            found = true;
             System.out.print("path : 0 -> ");
             for (int x : path) {
-                System.out.print(x + " -> ");
+                System.out.print(x == 0 ? x + "\n" : x + " -> ");
+                repaint();
+
+                /*
+
+
+                 */
             }
         } else {
             System.out.println("Kein Pfad gefunden!");
@@ -105,17 +134,17 @@ public class Graph extends JPanel {
 
     private boolean solvHC(int pos, Knoten k) {
         // Pick n' getNachbarn()
-        for (Knoten _k: k.getNachbarn()) {
+        for (Knoten _k : k.getNachbarn()) {
             // pruefe
-            if(_k.getName() == 0) {
-                if (pos!= path.length-1) { // BSP [5] pos: 4 nachbar.name true
+            if (_k.getName() == 0) {
+                if (pos != path.length - 1) { // BSP [5] pos: 4 nachbar.name true
                     continue;
                 }
                 path[pos] = _k.getName();
                 return true;
             }
             // pruefe
-            if(checkIfExists(_k.getName()))
+            if (checkIfExists(_k.getName()))
                 continue;
 
             path[pos] = _k.getName();
@@ -130,8 +159,8 @@ public class Graph extends JPanel {
     }
 
     private boolean checkIfExists(int name) {
-        for(int x : path) {
-            if(x == name) {
+        for (int x : path) {
+            if (x == name) {
                 return true;
             }
         }
