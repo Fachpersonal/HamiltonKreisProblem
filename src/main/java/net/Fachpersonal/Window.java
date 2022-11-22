@@ -46,7 +46,7 @@ public class Window extends JFrame implements Runnable {
                     System.exit(0x16);
                 } else if(e.getKeyCode() == KeyEvent.VK_C) { // CLEAR BOARD
                     Main.kanten.clear();
-                    Main.KN.clear();
+                    Main.knoten.clear();
                     repaint();
                     System.out.println("Cleared Board");
                 } else if(e.getKeyCode() == KeyEvent.VK_F) { // FIND PATH
