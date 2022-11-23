@@ -1,9 +1,12 @@
 package net.Fachpersonal;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 
 public class Window extends JFrame implements Runnable {
 
@@ -25,7 +28,11 @@ public class Window extends JFrame implements Runnable {
     }
     @Override
     public void run() {
-        this.setIconImage(new ImageIcon("C:\\Users\\falscherIdiot\\Pictures\\Downloads\\HamiltonKreisProblem.jpg").getImage());
+        try {
+            this.setIconImage(new ImageIcon(ImageIO.read(getClass().getResource("/HamiltonKreisProblem.jpg"))).getImage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         this.setTitle(TITLE);
         this.setResizable(true);
         this.setSize(500, 500);
