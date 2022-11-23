@@ -12,10 +12,14 @@ public class Graph extends JPanel {
     private Point pointPressed = null;
     private Point pointReleased = null;
 
+    private long sys_time;
+
     private int[] path;
     private Graphics g;
 
     public Graph() {
+        if(Main.simutaltion) return;
+
         Button b_find = new Button("Find Path");
         Button b_clear = new Button("Clear");
         //b_find.setBounds(100,100,80,40);
@@ -99,7 +103,6 @@ public class Graph extends JPanel {
                             g2.setStroke(new BasicStroke(3));
                             //g2.drawLine();   //thick
                             g2.drawLine(knoten.getX() + (SCALE / 2), knoten.getY() + (SCALE / 2), all.getX() + (SCALE / 2), all.getY() + (SCALE / 2));
-                            g.drawString(""+path, 500,500);
                         }
                     }
                 }
@@ -126,7 +129,9 @@ public class Graph extends JPanel {
         }
     }
 
-    private void hamCircle() {
+    public void hamCircle() {
+        sys_time = System.nanoTime();
+
         int anzahlKnoten = Main.knoten.size();
 
         path = new int[anzahlKnoten];
@@ -145,13 +150,17 @@ public class Graph extends JPanel {
 
 
                 }
+                //time needed to find path
+                System.out.println(System.nanoTime() - sys_time);
+                double duration = System.nanoTime() - sys_time;
+                System.out.println("Duration: " + duration + " ns ~ " + duration / 1000000 + " ms");
                 return;
             }
         }
         System.out.println("Keinen Pfad gefunden!");
     }
 
-    private boolean solveHC(int pos, Knoten k) {
+    public boolean solveHC(int pos, Knoten k) {
         // Pick n' getNachbarn()
         for (Knoten nachbar : k.getNachbarn()) {
             // pruefe
