@@ -10,6 +10,7 @@ public class Main {
 
     public static boolean simulation;
     public static int sim_knotenCount;
+    public static boolean calculateAllPossibleSolutions;
 
     public static void main(String[] args) {
         System.out.println("Hello world!");
@@ -17,11 +18,13 @@ public class Main {
         kanten = new ArrayList<>();
 
         /**
-         * set simulation: true, if you want to simulate knoten
-         * sim_knotenCount: simulated knoten count
+         * calculateAllPossibleSolutions: alle möglichen pfade ausgeben?
+         * set simulation: true, um simulation zu starten
+         * sim_knotenCount: anzahl der zu simulierenden Knoten -> größer als 7 dauert zu lange
          */
-        simulation = true; //true, um simulation zu starten
-        sim_knotenCount = 7; //anzahl der zu simulierenden Knoten -> größer als 8 dauert zu lange!!!!
+        calculateAllPossibleSolutions = true;
+        simulation = true;
+        sim_knotenCount = 8;
         if (simulation) {
             simulate();
             return;
@@ -46,7 +49,11 @@ public class Main {
             all.setNachbarn(foo);
             //System.out.println(all.getNachbarn().size());
         }
-        giveAllPossibleSolutions();
+        if (calculateAllPossibleSolutions) {
+            giveAllPossibleSolutions();
+            return;
+        }
+        new Graph().hamCircle();
     }
 
     public static void giveAllPossibleSolutions() {

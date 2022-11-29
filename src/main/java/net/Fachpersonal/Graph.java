@@ -132,7 +132,7 @@ public class Graph extends JPanel {
             /**
              * set true if you want to calculate all possible solutions
              */
-            if (true) {
+            if (Main.calculateAllPossibleSolutions) {
                 Main.giveAllPossibleSolutions();
                 find = false;
                 return;
