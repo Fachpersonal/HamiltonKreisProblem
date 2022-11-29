@@ -6,6 +6,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Window extends JFrame implements Runnable {
 
@@ -25,7 +26,7 @@ public class Window extends JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            this.setIconImage(new ImageIcon(ImageIO.read(getClass().getResource("/HamiltonKreisProblem.jpg"))).getImage());
+            this.setIconImage(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/HamiltonKreisProblem.jpg")))).getImage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
