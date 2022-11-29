@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Graph extends JPanel {
     public static boolean find = false;
@@ -12,10 +14,17 @@ public class Graph extends JPanel {
     private Point pointPressed = null;
     private Point pointReleased = null;
 
-    private int[] path;
+    public ArrayList<int[]> foundPaths;
+
+    public long sys_time;
+
+    public int[] path;
     private Graphics g;
 
     public Graph() {
+        foundPaths = new ArrayList<>();
+        if (Main.simulation) return;
+
         Button b_find = new Button("Find Path");
         Button b_clear = new Button("Clear");
         //b_find.setBounds(100,100,80,40);
@@ -99,7 +108,6 @@ public class Graph extends JPanel {
                             g2.setStroke(new BasicStroke(3));
                             //g2.drawLine();   //thick
                             g2.drawLine(knoten.getX() + (SCALE / 2), knoten.getY() + (SCALE / 2), all.getX() + (SCALE / 2), all.getY() + (SCALE / 2));
-                            g.drawString(""+path, 500,500);
                         }
                     }
                 }
@@ -121,12 +129,33 @@ public class Graph extends JPanel {
                     return;
                 }
             }
+            /**
+             * set true if you want to calculate all possible solutions
+             */
+            if (Main.calculateAllPossibleSolutions) {
+                Main.giveAllPossibleSolutions();
+                find = false;
+                return;
+            }
+
+            sys_time = System.nanoTime();
             hamCircle();
             find = false;
+            //time needed to find path
+            double duration = System.nanoTime() - sys_time;
+            System.out.println("Duration: " + duration + " ns ~ " + duration / 1000000 + " ms");
         }
     }
 
-    private void hamCircle() {
+    public void drawPath(int[] path) {
+        System.out.print("path : 0 -> ");
+        for (int x : path) {
+            System.out.print(x == 0 ? x + "\n" : x + " -> ");
+            repaint();
+        }
+    }
+
+    public boolean hamCircle() {
         int anzahlKnoten = Main.knoten.size();
 
         path = new int[anzahlKnoten];
@@ -138,24 +167,20 @@ public class Graph extends JPanel {
         if (Main.knoten.size() != 0) {
             if (solveHC(0, Main.knoten.get(0))) {
                 found = true;
-                System.out.print("path : 0 -> ");
-                for (int x : path) {
-                    System.out.print(x == 0 ? x + "\n" : x + " -> ");
-                    repaint();
 
-
-                }
-                return;
+                drawPath(path);
+                return true;
             }
         }
         System.out.println("Keinen Pfad gefunden!");
+        return false;
     }
 
-    private boolean solveHC(int pos, Knoten k) {
+    public boolean solveHC(int pos, Knoten k) {
         // Pick n' getNachbarn()
         for (Knoten nachbar : k.getNachbarn()) {
             // pruefe
-            if (nachbar.getName() == 0) {
+            if ((nachbar.getName() == 0) && !isKnownPath(pos, path, nachbar.getName())) {
                 if (pos != path.length - 1) { // BSP [5] pos: 4 nachbar.name true
                     continue;
                 }
@@ -182,6 +207,15 @@ public class Graph extends JPanel {
             if (x == name) {
                 return true;
             }
+        }
+        return false;
+    }
+
+    private boolean isKnownPath(int step , int[] path, int nachbar) {
+        int[] copyedArray = Arrays.copyOf(path,path.length);
+        copyedArray[step] = nachbar;
+        for (int[] ahhhhhhhh : foundPaths) {
+            if (Arrays.equals(ahhhhhhhh,copyedArray)) return true;
         }
         return false;
     }

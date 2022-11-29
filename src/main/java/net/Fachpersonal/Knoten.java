@@ -15,6 +15,13 @@ public class Knoten {
         nachbarn = new ArrayList<>();
     }
 
+    public Knoten(int name) {
+        this.name = name;
+        this.X = -1;
+        this.Y = -1;
+        nachbarn = new ArrayList<>();
+    }
+
     public int getName() {
         return name;
     }
@@ -29,5 +36,12 @@ public class Knoten {
 
     public ArrayList<Knoten> getNachbarn() {
         return nachbarn;
+    }
+
+    public void setNachbarn(ArrayList<Knoten> nachbarn) {
+        if (nachbarn.contains(Main.getKnotenByName(name))) {
+            nachbarn.remove(this);
+        }
+        this.nachbarn = nachbarn;
     }
 }

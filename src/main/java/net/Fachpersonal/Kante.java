@@ -2,10 +2,10 @@ package net.Fachpersonal;
 
 public class Kante {
 
-    private int x0;
-    private int y0;
-    private int x1;
-    private int y1;
+    private final int x0;
+    private final int y0;
+    private final int x1;
+    private final int y1;
     public Kante(int x, int y, int x1, int y1) {
         x0 = x;
         this.x1 = x1;
