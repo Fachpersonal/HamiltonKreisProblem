@@ -5,16 +5,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class Window extends JFrame implements Runnable {
 
-    private final String TITLE = "Hamilton Kreis Problem - v.0.2";
-
     public static Color[] colorPalette;
 
-    public Button pathB;
     public Window() {
         colorPalette = new Color[] {
                 new Color(239, 245, 245),
@@ -33,6 +29,7 @@ public class Window extends JFrame implements Runnable {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        String TITLE = "Hamilton Kreis Problem - v.0.2";
         this.setTitle(TITLE);
         this.setResizable(true);
         this.setSize(500, 500);
