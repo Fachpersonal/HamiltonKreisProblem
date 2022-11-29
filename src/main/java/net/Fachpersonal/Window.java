@@ -5,16 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Objects;
 
 public class Window extends JFrame implements Runnable {
 
-    private final String TITLE = "Hamilton Kreis Problem - v.0.2";
-
     public static Color[] colorPalette;
 
-    public Button pathB;
     public Window() {
         colorPalette = new Color[] {
                 new Color(239, 245, 245),
@@ -29,10 +26,11 @@ public class Window extends JFrame implements Runnable {
     @Override
     public void run() {
         try {
-            this.setIconImage(new ImageIcon(ImageIO.read(getClass().getResource("/HamiltonKreisProblem.jpg"))).getImage());
+            this.setIconImage(new ImageIcon(ImageIO.read(Objects.requireNonNull(getClass().getResource("/HamiltonKreisProblem.jpg")))).getImage());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        String TITLE = "Hamilton Kreis Problem - v.0.2";
         this.setTitle(TITLE);
         this.setResizable(true);
         this.setSize(500, 500);
