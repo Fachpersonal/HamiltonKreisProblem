@@ -22,9 +22,22 @@ public class Main {
          * set simulation: true, um simulation zu starten
          * sim_knotenCount: anzahl der zu simulierenden Knoten -> größer als 7 dauert zu lange
          */
-        calculateAllPossibleSolutions = true;
-        simulation = true;
-        sim_knotenCount = 8;
+
+        try {
+            calculateAllPossibleSolutions = args[0].equalsIgnoreCase("-CAP=true");
+            if (args[1].equalsIgnoreCase("-sim=true") && args.length == 3) {
+                simulation = true;
+                sim_knotenCount = Integer.parseInt(args[2]);
+            } else {
+                simulation = false;
+                sim_knotenCount = -1;
+            }
+        } catch (Exception e){
+            calculateAllPossibleSolutions = false;
+            simulation = false;
+            sim_knotenCount = -1;
+        }
+
         if (simulation) {
             simulate();
             return;
